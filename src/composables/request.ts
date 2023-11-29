@@ -1,3 +1,4 @@
+import { Message } from '@arco-design/web-vue'
 import { notNullish } from '@antfu/utils'
 import type { MaybeRef, UseFetchOptions, UseFetchReturn } from '@vueuse/core'
 import { createFetch, isObject } from '@vueuse/core'
@@ -37,7 +38,7 @@ const useRequest = createFetch({
     onFetchError({ data, error }) {
       console.error('onFetchError: ', data, error?.name, error?.message)
       if (error?.name !== 'AbortError')
-        AMessage.error('网络错误，请稍后再试')
+        Message.error('网络错误，请稍后再试')
       data = undefined
       return { data, error }
     },

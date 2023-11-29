@@ -1,3 +1,4 @@
+import { Message } from '@arco-design/web-vue'
 import { logout } from '~/api/_user'
 
 export enum ApiStatusCode {
@@ -61,5 +62,5 @@ export function handleCodeError(code: number, msg: string) {
       message += msg || '请求异常，请重试'
       break
   }
-  AMessage.error(message)
+  Message.error(message)
 }

@@ -47,17 +47,12 @@ export default defineConfig({
 
     // https://github.com/antfu/vite-plugin-components
     Components({
-      resolvers: [ArcoResolver({
-        resolveIcons: {
-          enable: true,
-        },
-        sideEffect: false,
-      })],
+      resolvers: [ArcoResolver({ resolveIcons: true })],
       dts: true,
     }),
 
     vitePluginForArco({
-      style: 'css',
+      style: true,
     }),
 
     // https://github.com/antfu/unocss
