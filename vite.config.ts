@@ -21,11 +21,7 @@ export default defineConfig({
     VueRouter(),
 
     // ⚠️ Vue must be placed after VueRouter()
-    Vue({
-      script: {
-        defineModel: true,
-      },
-    }),
+    Vue(),
 
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
