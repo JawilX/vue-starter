@@ -70,8 +70,8 @@ function goto(name: keyof RouteNamedMap) {
       :level-indent="36"
       auto-open-selected
     >
-      <template v-for="(submenu, index) in menus">
-        <ASubMenu v-if="submenu.children?.length" :key="String(index)">
+      <template v-for="submenu in menus" :key="submenu.name || submenu.meta.locale">
+        <ASubMenu v-if="submenu.children?.length">
           <template v-if="submenu.meta.icon" #icon>
             <img :src="submenu.meta.icon" class="h-4 w-4 fill-current">
           </template>
@@ -85,7 +85,7 @@ function goto(name: keyof RouteNamedMap) {
             {{ menu.meta.locale }}
           </AMenuItem>
         </ASubMenu>
-        <AMenuItem v-else :key="submenu.name" @click="goto(submenu.name!)">
+        <AMenuItem v-else @click="goto(submenu.name!)">
           <template v-if="submenu.meta.icon" #icon>
             <img :src="submenu.meta.icon" class="h-4 w-4 fill-current">
           </template>
