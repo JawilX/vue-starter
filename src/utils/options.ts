@@ -18,5 +18,6 @@ export function isOptions(includeAll = false): IOption[] {
 }
 
 export function getOptionLabel(options: IOption[], value?: string | number | boolean) {
-  return options.find(item => item.value === value)?.label
+  // eslint-disable-next-line eqeqeq
+  return options.find(item => item.value == value)?.label
 }
