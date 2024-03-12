@@ -76,3 +76,34 @@ export function treeFlat(tree: any[], childrenKey = 'children') {
   traverse(tree)
   return res
 }
+
+export function printImage(url: string) {
+  const iframe = document.createElement('iframe')
+  iframe.style.height = '0'
+  iframe.style.width = '0'
+  iframe.style.visibility = 'hidden'
+  const str = `<html>
+            <style media='print'>
+                 @page{size:A4 landscape};margin:0mm;padding:0}
+            </style>
+            <body>
+                 <div id="box"></div>
+            </body>
+  </html>
+  `
+  iframe.setAttribute('srcdoc', str)
+  document.body.appendChild(iframe)
+  iframe.addEventListener('load', () => {
+    const image = document.createElement('img')
+    image.src = url
+    image.style.display = 'block'
+    const box = iframe.contentDocument?.querySelector('#box')
+    box?.appendChild(image)
+    image.addEventListener('load', () => {
+      iframe.contentWindow?.print()
+    })
+  })
+  iframe.contentWindow?.addEventListener('afterprint', () => {
+    iframe.parentNode?.removeChild(iframe)
+  })
+}
