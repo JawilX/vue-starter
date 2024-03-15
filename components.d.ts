@@ -7,8 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ProTable: typeof import('./src/components/ProTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchForm: typeof import('./src/components/SearchForm.vue')['default']
+    SearchFormItem: typeof import('./src/components/SearchFormItem.vue')['default']
     TheMenu: typeof import('./src/components/TheMenu.vue')['default']
     TheTabBar: typeof import('./src/components/TheTabBar.vue')['default']
   }

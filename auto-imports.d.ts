@@ -32,7 +32,7 @@ declare global {
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
   const defineLoader: typeof import('vue-router/auto')['defineLoader']
-  const definePage: typeof import('unplugin-vue-router/runtime')['_definePage']
+  const definePage: typeof import('unplugin-vue-router/runtime')['definePage']
   const defineStore: typeof import('pinia')['defineStore']
   const eagerComputed: typeof import('@vueuse/core')['eagerComputed']
   const effectScope: typeof import('vue')['effectScope']
@@ -245,6 +245,7 @@ declare global {
   const useScriptTag: typeof import('@vueuse/core')['useScriptTag']
   const useScroll: typeof import('@vueuse/core')['useScroll']
   const useScrollLock: typeof import('@vueuse/core')['useScrollLock']
+  const useSelection: typeof import('./src/composables/selection')['useSelection']
   const useSessionStorage: typeof import('@vueuse/core')['useSessionStorage']
   const useShare: typeof import('@vueuse/core')['useShare']
   const useSlots: typeof import('vue')['useSlots']
@@ -258,6 +259,7 @@ declare global {
   const useSupported: typeof import('@vueuse/core')['useSupported']
   const useSwipe: typeof import('@vueuse/core')['useSwipe']
   const useTabBarStore: typeof import('./src/stores/tabBar')['useTabBarStore']
+  const useTable: typeof import('./src/composables/table')['useTable']
   const useTableProps: typeof import('./src/composables/table')['useTableProps']
   const useTemplateRefsList: typeof import('@vueuse/core')['useTemplateRefsList']
   const useTextDirection: typeof import('@vueuse/core')['useTextDirection']
@@ -344,8 +346,7 @@ declare module 'vue' {
     readonly debouncedWatch: UnwrapRef<typeof import('@vueuse/core')['debouncedWatch']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
-    readonly defineLoader: UnwrapRef<typeof import('vue-router/auto')['defineLoader']>
-    readonly definePage: UnwrapRef<typeof import('unplugin-vue-router/runtime')['_definePage']>
+    readonly definePage: UnwrapRef<typeof import('unplugin-vue-router/runtime')['definePage']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
@@ -558,6 +559,7 @@ declare module 'vue' {
     readonly useScriptTag: UnwrapRef<typeof import('@vueuse/core')['useScriptTag']>
     readonly useScroll: UnwrapRef<typeof import('@vueuse/core')['useScroll']>
     readonly useScrollLock: UnwrapRef<typeof import('@vueuse/core')['useScrollLock']>
+    readonly useSelection: UnwrapRef<typeof import('./src/composables/selection')['useSelection']>
     readonly useSessionStorage: UnwrapRef<typeof import('@vueuse/core')['useSessionStorage']>
     readonly useShare: UnwrapRef<typeof import('@vueuse/core')['useShare']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
@@ -571,7 +573,7 @@ declare module 'vue' {
     readonly useSupported: UnwrapRef<typeof import('@vueuse/core')['useSupported']>
     readonly useSwipe: UnwrapRef<typeof import('@vueuse/core')['useSwipe']>
     readonly useTabBarStore: UnwrapRef<typeof import('./src/stores/tabBar')['useTabBarStore']>
-    readonly useTableProps: UnwrapRef<typeof import('./src/composables/table')['useTableProps']>
+    readonly useTable: UnwrapRef<typeof import('./src/composables/table')['useTable']>
     readonly useTemplateRefsList: UnwrapRef<typeof import('@vueuse/core')['useTemplateRefsList']>
     readonly useTextDirection: UnwrapRef<typeof import('@vueuse/core')['useTextDirection']>
     readonly useTextSelection: UnwrapRef<typeof import('@vueuse/core')['useTextSelection']>
@@ -650,8 +652,7 @@ declare module '@vue/runtime-core' {
     readonly debouncedWatch: UnwrapRef<typeof import('@vueuse/core')['debouncedWatch']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
-    readonly defineLoader: UnwrapRef<typeof import('vue-router/auto')['defineLoader']>
-    readonly definePage: UnwrapRef<typeof import('unplugin-vue-router/runtime')['_definePage']>
+    readonly definePage: UnwrapRef<typeof import('unplugin-vue-router/runtime')['definePage']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
@@ -864,6 +865,7 @@ declare module '@vue/runtime-core' {
     readonly useScriptTag: UnwrapRef<typeof import('@vueuse/core')['useScriptTag']>
     readonly useScroll: UnwrapRef<typeof import('@vueuse/core')['useScroll']>
     readonly useScrollLock: UnwrapRef<typeof import('@vueuse/core')['useScrollLock']>
+    readonly useSelection: UnwrapRef<typeof import('./src/composables/selection')['useSelection']>
     readonly useSessionStorage: UnwrapRef<typeof import('@vueuse/core')['useSessionStorage']>
     readonly useShare: UnwrapRef<typeof import('@vueuse/core')['useShare']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
@@ -877,7 +879,7 @@ declare module '@vue/runtime-core' {
     readonly useSupported: UnwrapRef<typeof import('@vueuse/core')['useSupported']>
     readonly useSwipe: UnwrapRef<typeof import('@vueuse/core')['useSwipe']>
     readonly useTabBarStore: UnwrapRef<typeof import('./src/stores/tabBar')['useTabBarStore']>
-    readonly useTableProps: UnwrapRef<typeof import('./src/composables/table')['useTableProps']>
+    readonly useTable: UnwrapRef<typeof import('./src/composables/table')['useTable']>
     readonly useTemplateRefsList: UnwrapRef<typeof import('@vueuse/core')['useTemplateRefsList']>
     readonly useTextDirection: UnwrapRef<typeof import('@vueuse/core')['useTextDirection']>
     readonly useTextSelection: UnwrapRef<typeof import('@vueuse/core')['useTextSelection']>

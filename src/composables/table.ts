@@ -1,187 +1,169 @@
-import type { PaginationProps, TableBorder, TableColumnData, TableRowSelection, TableSortable } from '@arco-design/web-vue'
-import type { MaybeRef, UseFetchReturn } from '@vueuse/core'
-import { isString } from '@antfu/utils'
-import type { IColumnKey } from '~/utils/columns'
-import { getColumn } from '~/utils/columns'
+import type { PaginationProps } from '@arco-design/web-vue'
+import type { UseFetchReturn } from '@vueuse/core'
 
-type Size = 'mini' | 'small' | 'medium' | 'large'
-export interface IDefaultProps {
-  /** 是否显示边框 */
-  bordered?: TableBorder
-  /** 是否显示选中效果 */
-  hoverable?: boolean
-  /** 表格的大小 */
-  size?: Size
-  /** 是否允许调整列宽 */
-  'column-resizable'?: boolean
-  /** 是否为加载中状态 */
-  loading?: boolean
-  /** 分页参数 */
-  pagination?: PaginationProps
-  /** table数据类型 */
-  data?: any[]
-  /** 表头参数 */
-  columns?: TableColumnData[]
-  /** 表格行 key 的取值字段 */
-  'row-key'?: string
-  /** 表格的行选择器配置 */
-  'row-selection'?: TableRowSelection
-  'selected-keys'?: (string | number)[]
-  [x: string]: any
+export interface StateProps {
+  loading: boolean
+  tableData: any[]
+  pageable: PaginationProps
+  searchParam: {
+    [key: string]: any
+  }
+  searchInitParam: {
+    [key: string]: any
+  }
+  totalParam: {
+    [key: string]: any
+  }
+  icon?: {
+    [key: string]: any
+  }
 }
-export interface IPagination {
-  /** 当前页数 */
-  current?: number
-  /** 总页数默认是0条 */
-  total?: number
-  /** 单页时隐藏 */
-  hideOnSinglePage?: boolean
-}
-export interface ITableResponse<T> {
-  current?: number
-  records?: T[]
-  size?: number
-  total?: number
-  [x: string]: any
-}
-type GetListFunc<T> = (v: any) => UseFetchReturn<ITableResponse<T>>
-export function useTableProps<T>(loadListFunc: GetListFunc<T>, recordProcessFn?: (record: any) => any) {
-  const defaultProps: IDefaultProps = {
-    'bordered': { cell: true },
-    'size': 'large',
-    'column-resizable': true,
-    'loading': true,
-    'data': [] as any[],
-    'pagination': {
+
+/**
+ * @description table 页面操作方法封装
+ * @param {Function} api 获取表格数据 api 方法 (必传)
+ * @param {object} initParam 获取数据初始化参数 (非必传，默认为{})
+ * @param {boolean} isPageable 是否有分页 (非必传，默认为true)
+ * @param {Function} dataCallBack 对后台返回的数据进行处理的方法 (非必传)
+ */
+export function useTable(
+  api?: (params: any) => UseFetchReturn<any>,
+  initParam: object = {},
+  isPageable: boolean = true,
+  dataCallBack?: (data: any) => any,
+  requestError?: (error: any) => void,
+) {
+  const state = reactive<StateProps>({
+    // 请求时loading
+    loading: true,
+    // 表格数据
+    tableData: [],
+    // 分页数据
+    pageable: {
+      // 当前页数
       current: 1,
+      // 每页显示条数
       pageSize: 10,
+      // 总条数
       total: 0,
       showPageSize: true,
       showTotal: true,
-      hideOnSinglePage: false,
+      showJumper: true,
     },
-    'hoverable': false,
-    'columns': [],
-  }
-  //* 属性组
-  const propsRes = reactive<IDefaultProps>(defaultProps)
-  //* 设置请求参数，如果出了分页参数还有搜索参数，在模板页面调用此方法，可以加入参数
-  const loadListParams = reactive<any>({
-    page: 1,
-    size: 20,
+    // 查询参数(只包括查询)
+    searchParam: {},
+    // 初始化默认的查询参数
+    searchInitParam: {},
+    // 总参数(包含分页和查询参数)
+    totalParam: {},
   })
-  /**
-   * 单独设置默认属性
-   * @param params
-   */
-  const setProps = (params: IDefaultProps) => {
-    if (Object.keys(params).length > 0)
-      Object.assign(defaultProps, params)
-  }
-  /**
-   * 设置表头数据
-   * @param columns
-   */
-  const setColumns = (columns: (TableColumnData | IColumnKey)[]) => {
-    propsRes.columns = []
-    for (const item of columns) {
-      let column
-      if (isString(item))
-        column = getColumn(item)
-      else
-        column = item || {}
-      if (!Object.hasOwn(column, 'ellipsis'))
-        column.ellipsis = true
-      if (!Object.hasOwn(column, 'tooltip'))
-        column.tooltip = true
-      propsRes.columns.push(column)
-    }
-  }
-  /** column sortable */
-  const sortable: TableSortable = { sortDirections: ['ascend', 'descend'], sorter: true }
-  /**
-   * 设置loading
-   * @param status
-   */
-  const setLoading = (status: MaybeRef<boolean>) => {
-    propsRes.loading = unref(status)
-  }
-  /**
-   * 设置分页
-   */
-  const setPagination = ({ current, total, hideOnSinglePage = false }: IPagination) => {
-    propsRes.pagination!.current = Number(current)
-    total && (propsRes.pagination!.total = Number(total))
-    propsRes.pagination!.hideOnSinglePage = hideOnSinglePage
-    Object.assign(loadListParams, { page: Number(current), size: propsRes.pagination?.pageSize })
-  }
-  /**
-   * 设置列表请求参数
-   * @param params
-   */
-  const setLoadListParams = <R>(params?: R) => {
-    Object.assign(loadListParams, params)
-  }
-  /**
-   * 加载列表
-   */
-  const loadTableData = async (resetPageIndex = false) => {
-    if (resetPageIndex)
-      setPagination({ current: 1 })
 
+  /**
+   * @description 分页查询参数(只包括分页和表格字段排序,其他排序方式可自行配置)
+   */
+  const pageParam = computed(() => ({ page: state.pageable.current, size: state.pageable.pageSize }))
+
+  /**
+   * @description 更新分页信息
+   * @param {object} pageable 后台返回的分页数据
+   * @return void
+   */
+  const updatePageable = (pageable: PaginationProps) => {
+    Object.assign(state.pageable, pageable)
+  }
+  /**
+   * @description 获取表格数据
+   * @return void
+   */
+  const getTableList = async () => {
+    if (!api)
+      return
     try {
-      setLoading(true)
-      const { data } = await loadListFunc({ ...loadListParams })
-      setLoading(false)
-      if (data.value?.records?.length === 0 && data.value.current! > 1) {
-        setPagination({ current: data.value.current! - 1 })
-        const res = await loadListFunc({ ...loadListParams })
-        data.value = res.data.value
+      state.loading = true
+      // 先把初始化参数和分页参数放到总参数里面
+      Object.assign(state.totalParam, initParam, isPageable ? pageParam.value : {})
+      let { data } = await api({ ...state.searchInitParam, ...state.totalParam })
+      dataCallBack && (data = dataCallBack(data))
+      state.tableData = isPageable ? data.value.records : data.value
+      // 解构后台返回的分页数据 (如果有分页更新分页信息)
+      if (isPageable) {
+        const { current, size, total } = data.value
+        updatePageable({ current: Number(current), pageSize: Number(size), total: Number(total) })
       }
-      propsRes.data = recordProcessFn ? data.value?.records?.map(recordProcessFn) : data.value?.records
-      setPagination({
-        current: data.value?.current,
-        total: data.value?.total,
-      })
-      return data
     }
     catch (error) {
-      setLoading(false)
+      requestError && requestError(error)
     }
+    state.loading = false
   }
 
-  // 事件触发组
-  const propsEvent = reactive({
-    // 排序触发
-    sorterChange: (_dataIndex: string, _direction: string) => {
-      // console.log(_dataIndex, _direction)
-    },
-    // 分页触发
-    pageChange: (current: number) => {
-      setPagination({ current })
-      loadTableData()
-    },
-    // 修改每页显示条数
-    pageSizeChange: (size: number) => {
-      propsRes.pagination!.pageSize = size
-      Object.assign(loadListParams, { size })
-      loadTableData()
-    },
-    selectionChange: (rowKeys: (string | number)[]) => {
-      propsRes['selected-keys'] = rowKeys
-    },
-  })
+  /**
+   * @description 更新查询参数
+   * @return void
+   */
+  const updatedTotalParam = () => {
+    state.totalParam = {}
+    // 处理查询参数，可以给查询参数加自定义前缀操作
+    const nowSearchParam: StateProps['searchParam'] = {}
+    // 防止手动清空输入框携带参数（这里可以自定义查询参数前缀）
+    for (const key in state.searchParam) {
+      // 某些情况下参数为 false/0 也应该携带参数
+      if (state.searchParam[key] || state.searchParam[key] === false || state.searchParam[key] === 0)
+        nowSearchParam[key] = state.searchParam[key]
+    }
+    Object.assign(state.totalParam, nowSearchParam, isPageable ? pageParam.value : {})
+  }
+
+  /**
+   * @description 表格数据查询
+   * @return void
+   */
+  const search = () => {
+    state.pageable.current = 1
+    updatedTotalParam()
+    getTableList()
+  }
+
+  /**
+   * @description 表格数据重置
+   * @return void
+   */
+  const reset = () => {
+    state.pageable.current = 1
+    // 重置搜索表单的时，如果有默认搜索参数，则重置默认的搜索参数
+    state.searchParam = { ...state.searchInitParam }
+    updatedTotalParam()
+    getTableList()
+  }
+
+  /**
+   * @description 每页条数改变
+   * @param {number} val 当前条数
+   * @return void
+   */
+  const handleSizeChange = (val: number) => {
+    state.pageable.current = 1
+    state.pageable.pageSize = val
+    getTableList()
+  }
+
+  /**
+   * @description 当前页改变
+   * @param {number} val 当前页
+   * @return void
+   */
+  const handleCurrentChange = (val: number) => {
+    state.pageable.current = val
+    getTableList()
+  }
 
   return {
-    propsRes,
-    propsEvent,
-    loadListParams,
-    setProps,
-    setColumns,
-    sortable,
-    setLoading,
-    setPagination,
-    loadTableData,
-    setLoadListParams,
+    ...toRefs(state),
+    getTableList,
+    search,
+    reset,
+    handleSizeChange,
+    handleCurrentChange,
+    updatedTotalParam,
   }
 }
