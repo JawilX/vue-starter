@@ -54,3 +54,13 @@
 - VsCode: Commit Message Editor
 
 - WebStorm: Git Commit Template
+
+## 创建新项目
+
+```bash
+npm install -g degit
+```
+
+```bash
+degit JawilX/vue-starter project-name
+```

@@ -52,3 +52,13 @@ Editor Plugins:
 - VsCode: Commit Message Editor
 
 - WebStorm: Git Commit Template
+
+## Create New Project
+
+```bash
+npm install -g degit
+```
+
+```bash
+degit JawilX/vue-starter project-name
+```
