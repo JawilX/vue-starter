@@ -19,6 +19,7 @@ export interface ProTableProps {
   rowKey?: string // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
   selectable?: boolean // 行选择器 ==> 非比传 (默认为false)
   searchCols?: number | ResponsiveValue // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }
+  showSearch?: boolean // 是否显示搜索框 ==> 非必传（默认为true）
 }
 
 // 接受父组件参数，配置默认值
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
   rowKey: 'id',
   selectable: false,
   searchCols: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4, xxl: 6 } as ResponsiveValue),
+  showSearch: true,
 })
 
 // 定义 emit 事件
@@ -148,6 +150,7 @@ defineExpose({
 
 <template>
   <SearchForm
+    v-if="showSearch"
     :columns="searchColumns"
     :search-param="searchParam"
     :search-cols="searchCols"
