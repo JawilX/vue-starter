@@ -114,6 +114,9 @@ const showCollapse = computed(() => {
   }, 0)
   return show
 })
+
+const debounceSearch = useDebounceFn(props.search, 300)
+watch(() => props.searchParam, debounceSearch, { deep: true })
 </script>
 
 <template>

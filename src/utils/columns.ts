@@ -5,6 +5,7 @@ import type { IOption } from './options'
 import type { SearchProps } from '~/components/SearchForm.vue'
 
 export interface ColumnProps extends TableColumnData {
+  key?: keyof typeof keys
   search?: SearchProps | undefined // 搜索项配置
   enum?: EnumProps[] | Ref<EnumProps[]> | ((params?: any) => UseFetchReturn<any>) // 枚举字典
   fieldNames?: IOption // 指定 label && value && children 的 key 值
@@ -26,13 +27,12 @@ const keys = {
   phone: 'phone',
 }
 
-// eslint-disable-next-line unused-imports/no-unused-vars
-const spanFull = { xs: 24, sm: 24, md: 24, lg: 24, xl: 24, xxl: 24 }
+const spanFull = { xs: 1, sm: 2, md: 2, lg: 3, xl: 4, xxl: 6 }
 const data: readonly ColumnProps[] = [
-  { title: '序号', dataIndex: keys.index, width: 60, render: ({ rowIndex }) => rowIndex + 1 },
-  { title: '操作', dataIndex: keys.action, width: 200, slotName: 'action' },
-  { title: '姓名', dataIndex: keys.name, width: 180, search: { el: Input } },
-  { title: '电话', dataIndex: keys.phone, width: 180, search: { el: Input } },
+  { title: '序号', key: 'index', width: 60, render: ({ rowIndex }) => rowIndex + 1 },
+  { title: '操作', key: 'action', width: 200, slotName: 'action' },
+  { title: '姓名', key: 'name', width: 180, search: { el: Input } },
+  { title: '电话', key: 'phone', width: 180, search: { el: Input, ...spanFull } },
 ]
 
 export type IColumnKey = keyof typeof keys

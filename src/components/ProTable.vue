@@ -96,7 +96,7 @@ provide('enumMap', enumMap)
 const searchColumns = computed(() => {
   return tableColumns.value
     ?.filter(item => item.search?.el || item.search?.render)
-    .sort((a, b) => a.search!.order! - b.search!.order!)
+    .sort((a, b) => b.search!.order! - a.search!.order!)
 })
 
 // 设置 搜索表单默认排序 && 搜索表单项的默认值
@@ -156,9 +156,10 @@ defineExpose({
     :search-cols="searchCols"
     :search="_search"
     :reset="_reset"
+    class="mb-4"
   />
 
-  <div class="flex gap-4 p-4">
+  <div class="flex gap-4">
     <slot name="tableHeader" :selected-list="selectedList" :selected-list-ids="selectedListIds" :is-selected="isSelected" />
     <div class="flex-1" />
     <slot name="tableHeaderSuffix" :selected-list="selectedList" :selected-list-ids="selectedListIds" :is-selected="isSelected" />
@@ -178,5 +179,13 @@ defineExpose({
     @selection-change="selectionChange"
     @page-size-change="handleSizeChange"
     @page-change="handleCurrentChange"
-  />
+  >
+    <template
+      v-for="item in tableColumns.filter((i) => i.slotName)"
+      :key="item.slotName"
+      #[item.slotName!]="{ column, record, rowIndex }"
+    >
+      <slot :name="item.slotName" v-bind="{ column, record, rowIndex }" />
+    </template>
+  </ATable>
 </template>
