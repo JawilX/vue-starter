@@ -142,6 +142,7 @@ defineExpose({
   handleCurrentChange,
   clearSelection,
   enumMap,
+  setEnumMap,
   isSelected,
   selectedList,
   selectedListIds,

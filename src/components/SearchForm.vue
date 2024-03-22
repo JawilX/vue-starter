@@ -117,16 +117,25 @@ const showCollapse = computed(() => {
 
 const debounceSearch = useDebounceFn(props.search, 300)
 watch(() => props.searchParam, debounceSearch, { deep: true })
+
+// 接收 enumMap
+const enumMap = inject('enumMap', ref(new Map()))
+function isRadioGroupAndEmpty(column: ColumnProps) {
+  const enumData = enumMap.value.get(column.dataIndex)
+  return column.search?.el?.name === 'RadioGroup' && !enumData?.length
+}
 </script>
 
 <template>
   <AForm class="border-b border-b-gray-2 px-4 pt-4" :model="searchParam" layout="inline">
     <AGrid :cols="searchCols" :col-gap="12" :collapsed="collapsed">
-      <AGridItem v-for="item in columns" :key="item.dataIndex" :span="item.search![breakPoint]">
-        <AFormItem :label="String(item.title)" :name="item.dataIndex">
-          <SearchFormItem :column="item" :search-param="searchParam" />
-        </AFormItem>
-      </AGridItem>
+      <template v-for="item in columns" :key="item.dataIndex">
+        <AGridItem v-if="!isRadioGroupAndEmpty(item)" :span="item.search![breakPoint] ?? item.search!.span">
+          <AFormItem :label="String(item.title)" :name="item.dataIndex">
+            <SearchFormItem :column="item" :search-param="searchParam" />
+          </AFormItem>
+        </AGridItem>
+      </template>
       <AGridItem suffix>
         <AFormItem hide-label>
           <AButton type="primary" @click="search">
