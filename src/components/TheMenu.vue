@@ -29,10 +29,11 @@ watch(() => route.name, () => {
 }, { immediate: true })
 
 const openKeys = ref<string[]>([])
-watch(() => route.name, () => {
-  for (let i = 0, length = menus.length; i < length; i++) {
-    if (menus[i].children?.find((item: any) => item.name === route.name))
-      return openKeys.value = Array.from(new Set(openKeys.value.concat(String(i))))
+watch(() => route.name, (val) => {
+  for (const menu of menus) {
+    const curMenu = menu.children?.find((item: any) => item.name === val)
+    if (curMenu)
+      return openKeys.value = Array.from(new Set(openKeys.value.concat(menu.name || menu.meta.locale)))
   }
 }, { immediate: true })
 
