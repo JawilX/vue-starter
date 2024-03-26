@@ -1,5 +1,4 @@
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
-import { cloneDeep } from '~/utils'
 
 export interface ITab {
   name: string
@@ -35,7 +34,7 @@ export const useTabBarStore = defineStore('tabBar', () => {
     const index = cacheTabs.value.findIndex(item => item.name === name)
     if (index === -1)
       cacheTabs.value.push({ name, title: allTab.value[name] })
-    cacheRoutes.value[name] = cloneDeep(route)
+    cacheRoutes.value[name] = { ...route }
   }
 
   function deleteTab(name: string) {
