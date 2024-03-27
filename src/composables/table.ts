@@ -82,8 +82,8 @@ export function useTable(
       state.loading = true
       // 先把初始化参数和分页参数放到总参数里面
       Object.assign(state.totalParam, initParam, isPageable ? pageParam.value : {})
-      let { data } = await api({ ...state.searchInitParam, ...state.totalParam })
-      dataCallBack && (data = dataCallBack(data))
+      const { data } = await api({ ...state.searchInitParam, ...state.totalParam })
+      dataCallBack && (data.value = dataCallBack(data.value))
       state.tableData = isPageable ? data.value.records : data.value
       // 解构后台返回的分页数据 (如果有分页更新分页信息)
       if (isPageable) {
