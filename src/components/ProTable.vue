@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
   bordered: () => ({ cell: true } as TableBorder),
   rowKey: 'id',
   selectable: false,
-  searchCols: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4, xxl: 6 } as ResponsiveValue),
+  searchCols: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 3, xxl: 4 } as ResponsiveValue),
   showSearch: true,
 })
 

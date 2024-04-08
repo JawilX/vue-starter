@@ -27,7 +27,7 @@ const keys = {
   phone: 'phone',
 }
 
-const spanFull = { xs: 1, sm: 2, md: 2, lg: 3, xl: 4, xxl: 6 }
+const spanFull = { xs: 1, sm: 2, md: 2, lg: 3, xl: 3, xxl: 4 }
 const data: readonly ColumnProps[] = [
   { title: '序号', key: 'index', width: 60, render: ({ rowIndex }) => rowIndex + 1 },
   { title: '操作', key: 'action', width: 200, slotName: 'action' },

@@ -77,6 +77,7 @@ const allowClear = computed(() => {
     v-model.trim="_searchParam[column.search?.key ?? column.dataIndex!]"
     :data="column.search?.el?.name === 'TreeSelect' ? columnEnum : []"
     :options="column.search?.el?.name === 'Cascader' ? columnEnum : []"
+    value-format="YYYY-MM-DD HH:mm:ss"
     :class="{ 'flex-wrap': column.search?.el?.name === 'RadioGroup' }"
   >
     <template v-if="column.search?.el?.name === 'Select'">
