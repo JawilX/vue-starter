@@ -160,10 +160,24 @@ defineExpose({
     class="mb-4"
   />
 
-  <div class="flex gap-4">
-    <slot name="tableHeader" :selected-list="selectedList" :selected-list-ids="selectedListIds" :is-selected="isSelected" />
+  <div class="flex bg-white">
+    <div v-if="$slots.tableHeader" class="flex gap-4 px-4 pt-4">
+      <slot
+        name="tableHeader"
+        :selected-list="selectedList"
+        :selected-list-ids="selectedListIds"
+        :is-selected="isSelected"
+      />
+    </div>
     <div class="flex-1" />
-    <slot name="tableHeaderSuffix" :selected-list="selectedList" :selected-list-ids="selectedListIds" :is-selected="isSelected" />
+    <div v-if="$slots.tableHeaderSuffix" class="flex gap-4 px-4 pt-4">
+      <slot
+        name="tableHeaderSuffix"
+        :selected-list="selectedList"
+        :selected-list-ids="selectedListIds"
+        :is-selected="isSelected"
+      />
+    </div>
   </div>
 
   <ATable
