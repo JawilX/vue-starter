@@ -128,16 +128,16 @@ function isRadioGroupAndEmpty(column: ColumnProps) {
 
 <template>
   <AForm class="border-b border-b-gray-2 px-4 pt-4" :model="searchParam" layout="inline">
-    <AGrid :cols="searchCols" :col-gap="12" :collapsed="collapsed">
+    <AGrid class="w-full" :cols="searchCols" :col-gap="12" :collapsed="collapsed">
       <template v-for="item in columns" :key="item.dataIndex">
-        <AGridItem v-if="!isRadioGroupAndEmpty(item)" :span="item.search![breakPoint] ?? item.search!.span">
+        <AGridItem v-if="!isRadioGroupAndEmpty(item)" :span="item.search![breakPoint] ?? item.search!.span ?? 1">
           <AFormItem :label="String(item.title)" :name="item.dataIndex">
             <SearchFormItem :column="item" :search-param="searchParam" />
           </AFormItem>
         </AGridItem>
       </template>
       <AGridItem suffix>
-        <AFormItem hide-label>
+        <AFormItem hide-label content-class="justify-end">
           <AButton type="primary" @click="search">
             查询
           </AButton>
