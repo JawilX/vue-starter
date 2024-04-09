@@ -16,6 +16,7 @@ export interface ProTableProps {
   pagination?: boolean // 是否需要分页组件 ==> 非必传（默认为true）
   initParam?: any // 初始化请求参数 ==> 非必传（默认为{}）
   bordered?: boolean | TableBorder // 是否带有纵向边框 ==> 非必传（默认为 { cell: true }）
+  scroll?: { x?: number | string, y?: number | string, minWidth?: number | string, maxHeight?: number | string } // 表格滚动配置 ==> 非必传
   rowKey?: string // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
   selectable?: boolean // 行选择器 ==> 非比传 (默认为false)
   searchCols?: number | ResponsiveValue // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }
@@ -185,6 +186,7 @@ defineExpose({
     v-bind="$attrs"
     class="px-4 pb-0"
     :bordered="bordered"
+    :scroll="scroll"
     :loading="loading"
     :row-key="rowKey"
     :row-selection="selectable ? { type: 'checkbox', showCheckedAll: true, selectedRowKeys: selectedListIds } : undefined"
