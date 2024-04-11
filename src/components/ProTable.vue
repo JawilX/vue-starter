@@ -88,6 +88,14 @@ async function setEnumMap({ dataIndex, enum: enumValue }: ColumnProps) {
 tableColumns.value.forEach(async (col) => {
   // 设置 enumMap
   await setEnumMap(col)
+  // 表格单元格渲染，将带 enum 的数据格式化
+  if (col.enum && !col.render) {
+    col.render = ({ record }) => {
+      const currentVal = record[col.dataIndex!]
+      const enumData = enumMap.value.get(col.dataIndex!) ?? []
+      return enumData.find(item => item.value === currentVal)?.[col.fieldNames?.label ?? 'label'] ?? currentVal
+    }
+  }
 })
 
 // 注入 enumMap
