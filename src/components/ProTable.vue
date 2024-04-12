@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { notNullish } from '@antfu/utils'
-import type { ResponsiveValue, TableBorder, TableColumnData, TableInstance } from '@arco-design/web-vue'
+import type { ResponsiveValue, TableBorder, TableInstance } from '@arco-design/web-vue'
 import type { UseFetchReturn } from '@vueuse/core'
 import { getColumns } from '~/utils/columns'
 import type { ColumnProps, IColumnKey } from '~/utils/columns'
 
 export interface ProTableProps {
-  columns: (TableColumnData | IColumnKey)[] // 列配置项  ==> 必传
+  columns: (ColumnProps | IColumnKey)[] // 列配置项  ==> 必传
   data?: any[] // 静态 table data 数据，若存在则不会使用 requestApi 返回的 data ==> 非必传
   requestApi?: (params: any) => UseFetchReturn<any> // 请求表格数据的 api ==> 非必传
   requestAuto?: boolean // 是否自动执行请求 api ==> 非必传（默认为true）
@@ -61,7 +61,10 @@ const processTableData = computed(() => {
   )
 })
 
-const tableColumns = ref<ColumnProps[]>(getColumns(props.columns))
+const tableColumns = ref<ColumnProps[]>()
+watchEffect(() => {
+  tableColumns.value = getColumns(props.columns)
+})
 
 // 定义 enumMap 存储 enum 值（避免异步请求无法格式化单元格内容 || 无法填充搜索下拉选择）
 const enumMap = ref(new Map<string, { [key: string]: any }[]>())
@@ -124,8 +127,8 @@ onMounted(() => {
     getTableList()
 })
 
-// 监听页面 initParam 改变，重新获取表格数据
-watch(() => props.initParam, getTableList, { deep: true })
+// 监听页面 Param 改变，重新获取表格数据
+watch(() => [props.initParam, searchParam.value], search, { deep: true })
 
 function _search() {
   search()

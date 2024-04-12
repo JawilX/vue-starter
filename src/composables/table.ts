@@ -75,7 +75,7 @@ export function useTable(
    * @description 获取表格数据
    * @return void
    */
-  const getTableList = async () => {
+  const getTableList = useDebounceFn(async () => {
     if (!api)
       return
     try {
@@ -95,7 +95,7 @@ export function useTable(
       requestError && requestError(error)
     }
     state.loading = false
-  }
+  }, 200)
 
   /**
    * @description 更新查询参数
