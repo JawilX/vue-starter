@@ -42,14 +42,17 @@ export type SearchProps = {
 
 export interface SearchFormProps {
   columns?: ColumnProps[] // 搜索配置列
+  hideSearchButton?: boolean // 是否隐藏搜索按钮
   searchParam?: { [key: string]: any } // 搜索参数
   searchCols: number | ResponsiveValue
+  collapsedRows?: number // 搜索项默认折叠行数
   search: (params: any) => void // 搜索方法
   reset: (params: any) => void // 重置方法
 }
 
 // 默认值
 const props = withDefaults(defineProps<SearchFormProps> (), {
+  collapsedRows: 1,
   columns: () => [],
   searchParam: () => ({}),
 })
@@ -125,7 +128,7 @@ function isRadioGroupAndEmpty(column: ColumnProps) {
 
 <template>
   <AForm class="border-b border-b-gray-2 px-4 pt-4" :model="searchParam" layout="inline">
-    <AGrid class="w-full" :cols="searchCols" :col-gap="12" :collapsed="collapsed">
+    <AGrid class="w-full" :cols="searchCols" :col-gap="12" :collapsed="collapsed" :collapsed-rows="collapsedRows">
       <template v-for="item in columns" :key="item.dataIndex">
         <AGridItem v-if="!isRadioGroupAndEmpty(item)" :span="item.search![breakPoint] ?? item.search!.span ?? 1">
           <AFormItem :label="String(item.title)" :field="item.dataIndex">
@@ -133,7 +136,7 @@ function isRadioGroupAndEmpty(column: ColumnProps) {
           </AFormItem>
         </AGridItem>
       </template>
-      <AGridItem suffix>
+      <AGridItem v-if="!hideSearchButton" suffix content-class="justify-end">
         <AFormItem hide-label content-class="justify-end">
           <AButton type="primary" @click="search">
             查询

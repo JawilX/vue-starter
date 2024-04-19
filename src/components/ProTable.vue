@@ -21,6 +21,9 @@ export interface ProTableProps {
   selectable?: boolean // 行选择器 ==> 非比传 (默认为false)
   searchCols?: number | ResponsiveValue // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }
   showSearch?: boolean // 是否显示搜索框 ==> 非必传（默认为true）
+  hideSearchButton?: boolean // 是否隐藏搜索按钮 ==> 非必传（默认为false）
+  searchFormClass?: string // 搜索表单样式 ==> 非必传
+  collapsedRows?: number // 搜索项默认折叠行数
 }
 
 // 接受父组件参数，配置默认值
@@ -34,6 +37,8 @@ const props = withDefaults(defineProps<ProTableProps>(), {
   selectable: false,
   searchCols: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 3, xxl: 4 } as ResponsiveValue),
   showSearch: true,
+  hideSearchButton: false,
+  collapsedRows: 1,
 })
 
 // 定义 emit 事件
@@ -88,7 +93,7 @@ async function setEnumMap({ dataIndex, enum: enumValue }: ColumnProps) {
   enumMap.value.set(dataIndex!, data.value)
 }
 
-tableColumns.value.forEach(async (col) => {
+tableColumns.value?.forEach(async (col) => {
   // 设置 enumMap
   await setEnumMap(col)
   // 表格单元格渲染，将带 enum 的数据格式化
@@ -164,12 +169,15 @@ defineExpose({
 <template>
   <SearchForm
     v-if="showSearch"
+    :collapsed-rows="collapsedRows"
     :columns="searchColumns"
+    :hide-search-button="hideSearchButton"
     :search-param="searchParam"
     :search-cols="searchCols"
     :search="_search"
     :reset="_reset"
     class="mb-4"
+    :class="searchFormClass"
   />
 
   <div class="flex bg-white">
@@ -201,7 +209,7 @@ defineExpose({
     :loading="loading"
     :row-key="rowKey"
     :row-selection="selectable ? { type: 'checkbox', showCheckedAll: true, selectedRowKeys: selectedListIds } : undefined"
-    :columns="tableColumns"
+    :columns="tableColumns?.filter((i) => !i.hidden)"
     :data="processTableData"
     :pagination="pageable"
     @selection-change="selectionChange"
@@ -209,7 +217,7 @@ defineExpose({
     @page-change="handleCurrentChange"
   >
     <template
-      v-for="item in tableColumns.filter((i) => i.slotName)"
+      v-for="item in tableColumns?.filter((i) => i.slotName)"
       :key="item.slotName"
       #[item.slotName!]="{ column, record, rowIndex }"
     >

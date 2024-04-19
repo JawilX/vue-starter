@@ -10,6 +10,7 @@ export interface ColumnProps extends TableColumnData {
   enum?: EnumProps[] | Ref<EnumProps[]> | ((params?: any) => UseFetchReturn<any>) // 枚举字典
   fieldNames?: IOption // 指定 label && value && children 的 key 值
   span?: number // 每列显示的列数
+  hidden?: boolean // 是否在表格中隐藏
 }
 
 export interface EnumProps {
