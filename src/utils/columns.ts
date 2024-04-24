@@ -5,7 +5,6 @@ import type { IOption } from './options'
 import type { SearchProps } from '~/components/SearchForm.vue'
 
 export interface ColumnProps extends TableColumnData {
-  key?: keyof typeof keys
   search?: SearchProps | undefined // 搜索项配置
   enum?: EnumProps[] | Ref<EnumProps[]> | ((params?: any) => UseFetchReturn<any>) // 枚举字典
   fieldNames?: IOption // 指定 label && value && children 的 key 值
@@ -21,31 +20,24 @@ export interface EnumProps {
   [key: string]: any
 }
 
-const keys = {
-  index: 'index',
-  action: 'action',
-  name: 'name',
-  phone: 'phone',
-}
-
 const spanFull = { xs: 1, sm: 2, md: 2, lg: 3, xl: 3, xxl: 4 }
-const data: readonly ColumnProps[] = [
-  { title: '序号', key: 'index', width: 60, render: ({ rowIndex }) => rowIndex + 1 },
-  { title: '操作', key: 'action', width: 200, slotName: 'action' },
-  { title: '姓名', key: 'name', width: 180, search: { el: Input } },
-  { title: '电话', key: 'phone', width: 180, search: { el: Input, ...spanFull } },
-]
+const data = {
+  index: { title: '序号', dataIndex: 'index', width: 60, render: ({ rowIndex }) => rowIndex + 1 } as ColumnProps,
+  action: { title: '操作', dataIndex: 'action', width: 200, slotName: 'action' } as ColumnProps,
+  name: { title: '姓名', dataIndex: 'name', width: 180, search: { el: Input } } as ColumnProps,
+  phone: { title: '电话', dataIndex: 'phone', width: 180, search: { el: Input, ...spanFull } } as ColumnProps,
+} as const
 
-export type IColumnKey = keyof typeof keys
+export type IColumnKey = keyof typeof data
 
-export function getColumn(key: IColumnKey) {
-  return data.find(item => item.dataIndex === key) || {}
+export function getColumn(key: IColumnKey, override: Partial<ColumnProps> = {}): ColumnProps {
+  return { ...data[key], ...override }
 }
 
 export function getColumns(columns: (ColumnProps | IColumnKey)[]) {
   const res = []
   for (const item of columns) {
-    let column
+    let column: ColumnProps
     if (isString(item))
       column = getColumn(item)
     else
