@@ -67,9 +67,6 @@ const processTableData = computed(() => {
 })
 
 const tableColumns = ref<ColumnProps[]>()
-watchEffect(() => {
-  tableColumns.value = getColumns(props.columns)
-})
 
 // 定义 enumMap 存储 enum 值（避免异步请求无法格式化单元格内容 || 无法填充搜索下拉选择）
 const enumMap = ref(new Map<string, { [key: string]: any }[]>())
@@ -93,17 +90,20 @@ async function setEnumMap({ dataIndex, enum: enumValue }: ColumnProps) {
   enumMap.value.set(dataIndex!, data.value)
 }
 
-tableColumns.value?.forEach(async (col) => {
-  // 设置 enumMap
-  await setEnumMap(col)
-  // 表格单元格渲染，将带 enum 的数据格式化
-  if (col.enum && !col.render) {
-    col.render = ({ record }) => {
-      const currentVal = record[col.dataIndex!]
-      const enumData = enumMap.value.get(col.dataIndex!) ?? []
-      return enumData.find(item => item.value === currentVal)?.[col.fieldNames?.label ?? 'label'] ?? currentVal
+watchEffect(() => {
+  tableColumns.value = getColumns(props.columns)
+  tableColumns.value?.forEach(async (col) => {
+    // 设置 enumMap
+    await setEnumMap(col)
+    // 表格单元格渲染，将带 enum 的数据格式化
+    if (col.enum && !col.render) {
+      col.render = ({ record }) => {
+        const currentVal = record[col.dataIndex!]
+        const enumData = enumMap.value.get(col.dataIndex!) ?? []
+        return enumData.find(item => item.value === currentVal)?.[col.fieldNames?.label ?? 'label'] ?? currentVal
+      }
     }
-  }
+  })
 })
 
 // 注入 enumMap
