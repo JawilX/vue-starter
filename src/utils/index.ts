@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 type TargetContext = '_self' | '_parent' | '_blank' | '_top'
 export function openWindow(url: string, opts?: { target?: TargetContext, [key: string]: any }) {
   const { target = '_blank', ...others } = opts || {}
@@ -34,13 +36,12 @@ export function dateRangeFormat(val: string[], mode?: string) {
   if (!val)
     return []
 
-  const start = val[0]
-  let end = val[1]
+  const start = dayjs(val[0]).format('YYYY-MM-DD 00:00:00')
+  let end = dayjs(val[1]).format('YYYY-MM-DD 23:59:59')
 
   if (mode === 'year')
     end = end.replace(/-01-01/, '-12-31')
 
-  end = end.replace(/00:00:00/, '23:59:59')
   return [start, end]
 }
 
