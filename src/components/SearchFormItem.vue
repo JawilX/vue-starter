@@ -1,4 +1,4 @@
-<script setup lang="ts" name="SearchFormItem">
+<script setup lang="ts">
 import { notNullish } from '@antfu/utils'
 import { Option, Radio } from '@arco-design/web-vue'
 import type { ColumnProps } from '~/utils/columns'
