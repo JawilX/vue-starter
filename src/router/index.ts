@@ -1,6 +1,7 @@
 import type { App } from 'vue'
 import type { Router } from 'vue-router/auto'
 import { createRouter, createWebHashHistory } from 'vue-router/auto'
+import { routes } from 'vue-router/auto-routes'
 import { useMenuStore } from '~/stores/menu'
 
 function setupRouterGuard(router: Router) {
@@ -38,8 +39,7 @@ function setupRouterGuard(router: Router) {
 export async function setupRouter(app: App) {
   const router = createRouter({
     history: createWebHashHistory(),
-    // You don't need to pass the routes anymore,
-    // the plugin writes it for you 🤖
+    routes,
   })
   app.use(router)
   setupRouterGuard(router)
