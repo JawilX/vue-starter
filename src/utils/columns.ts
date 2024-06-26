@@ -42,10 +42,15 @@ export function getColumns(columns: (ColumnProps | IColumnKey)[]) {
       column = getColumn(item)
     else
       column = item || {}
-    if (!Object.hasOwn(column, 'ellipsis'))
-      column.ellipsis = true
-    if (!Object.hasOwn(column, 'tooltip'))
-      column.tooltip = true
+    try {
+      if (!Object.hasOwn(column, 'ellipsis'))
+        column.ellipsis = true
+      if (!Object.hasOwn(column, 'tooltip'))
+        column.tooltip = true
+    }
+    catch (e) {
+      console.error(e)
+    }
     res.push(column)
   }
   return res
