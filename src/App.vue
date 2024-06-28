@@ -17,11 +17,13 @@ const tabBarStore = useTabBarStore()
           <TheTabBar />
         </div>
         <div class="flex-1 overflow-auto">
-          <RouterView v-slot="{ Component }">
-            <KeepAlive>
-              <component :is="Component" :key="route.fullPath" />
-            </KeepAlive>
-          </RouterView>
+          <Suspense>
+            <RouterView v-slot="{ Component }">
+              <KeepAlive>
+                <component :is="Component" :key="route.fullPath" />
+              </KeepAlive>
+            </RouterView>
+          </Suspense>
         </div>
       </ALayoutContent>
     </ALayout>
