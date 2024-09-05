@@ -12,7 +12,7 @@ const tabBarStore = useTabBarStore()
       <ALayoutSider v-if="menuStore.visible" :width="220" :collapsed="collapsed">
         <TheMenu v-model:collapsed="collapsed" />
       </ALayoutSider>
-      <ALayoutContent class="box-border flex flex-col bg-#EBEFF4 px-5 pb-4">
+      <ALayoutContent class="box-border flex flex-col bg-[#f7f8fa] px-5 pb-4">
         <div v-if="tabBarStore.visible">
           <TheTabBar />
         </div>
