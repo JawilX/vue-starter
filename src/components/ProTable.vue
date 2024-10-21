@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { notNullish } from '@antfu/utils'
 import type { ResponsiveValue, TableBorder, TableInstance } from '@arco-design/web-vue'
 import type { UseFetchReturn } from '@vueuse/core'
+import { notNullish } from '@antfu/utils'
 import { getColumns } from '~/utils/columns'
 import type { ColumnProps, IColumnKey } from '~/utils/columns'
 
@@ -221,7 +221,9 @@ defineExpose({
       :key="item.slotName"
       #[item.slotName!]="{ column, record, rowIndex }"
     >
-      <slot :name="item.slotName" v-bind="{ column, record, rowIndex }" />
+      <slot :name="item.slotName" v-bind="{ column, record, rowIndex }">
+        {{ record[column.dataIndex] }}
+      </slot>
     </template>
   </ATable>
 </template>
