@@ -1,14 +1,13 @@
 import path from 'node:path'
-import { defineConfig } from 'vite'
+import { vitePluginForArco } from '@arco-plugins/vite-vue'
 import Vue from '@vitejs/plugin-vue'
-import Components from 'unplugin-vue-components/vite'
+import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { ArcoResolver } from 'unplugin-vue-components/resolvers'
-import VueRouter from 'unplugin-vue-router/vite'
+import Components from 'unplugin-vue-components/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
-
-import { vitePluginForArco } from '@arco-plugins/vite-vue'
-import UnoCSS from 'unocss/vite'
+import VueRouter from 'unplugin-vue-router/vite'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   resolve: {
@@ -35,7 +34,7 @@ export default defineConfig({
           'vue-router/auto': ['useLink'],
         },
       ],
-      resolvers: [ArcoResolver()],
+      resolvers: [ArcoResolver({ importStyle: false })],
       dts: true,
       dirs: ['./src/composables', './src/stores'],
       vueTemplate: true,
