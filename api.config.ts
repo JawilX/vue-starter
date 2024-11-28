@@ -10,11 +10,11 @@ export default defineConfig({
     },
   ],
   httpTpl: 'import type { UseFetchOptions } from \'@vueuse/core\'',
-  apiBody: ({ url, method, summary, name, outputInterface, pstr1, pstr2 }) => {
+  apiBody: ({ url, method, summary, name, formDataStr, outputInterface, pstr1, pstr2 }) => {
     return `
             /** ${summary || '无注释'} */
             export function ${name}(${pstr1}, useFetchOptions?: UseFetchOptions) {
-              return use${method}<${outputInterface}>(\`${url}\`, ${pstr2}, useFetchOptions)
+              return use${method}${formDataStr}<${outputInterface}>(\`${url}\`, ${pstr2}, useFetchOptions)
             }`
   },
 })
