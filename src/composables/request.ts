@@ -46,15 +46,10 @@ const useRequest = createFetch({
   fetchOptions: { mode: 'cors' },
 })
 
-/**
- * 封装 get 请求
- * @param url 请求地址
- * @param query 请求参数
- */
 export function useGet<T extends ApiResponse<any>>(
   url: MaybeRef<string>,
   query?: MaybeRef<unknown>,
-  useFetchOptions?: UseFetchOptions,
+  useFetchOptions: UseFetchOptions = {},
 ): UseFetchReturn<T['data']> {
   const _url = computed(() => {
     const _url = unref(url)
@@ -63,43 +58,45 @@ export function useGet<T extends ApiResponse<any>>(
     return `${_url}${queryString ? '?' : ''}${queryString}`
   })
 
-  return useRequest<T['data']>(_url, useFetchOptions || {}).json()
+  return useRequest<T['data']>(_url, useFetchOptions).json()
 }
 
-/**
- * 封装 post 请求
- * @param url 请求地址
- * @param payload 请求参数
- */
 export function usePost<T extends ApiResponse<any>>(
   url: MaybeRef<string>,
   payload?: MaybeRef<unknown>,
-  useFetchOptions?: UseFetchOptions,
+  useFetchOptions: UseFetchOptions = {},
 ): UseFetchReturn<T['data']> {
-  return useRequest<T['data']>(url, useFetchOptions || {}).post(payload).json()
+  return useRequest<T['data']>(url, useFetchOptions).post(payload).json()
 }
-/**
- * 封装 put 请求
- * @param url 请求地址
- * @param payload 请求参数
- */
+
+export function usePostFormData<T extends ApiResponse<any>>(
+  url: MaybeRef<string>,
+  payload?: MaybeRef<unknown>,
+  useFetchOptions: UseFetchOptions = {},
+): UseFetchReturn<T['data']> {
+  const formData = new FormData()
+  Object.entries(payload || {}).forEach(([key, value]) => {
+    formData.append(key, value)
+  })
+  return useRequest<T['data']>(
+    url,
+    { headers: { 'Content-Type': 'multipart/form-data' } },
+    useFetchOptions,
+  ).post(formData).json()
+}
+
 export function usePut<T extends ApiResponse<any>>(
   url: MaybeRef<string>,
   payload?: MaybeRef<unknown>,
-  useFetchOptions?: UseFetchOptions,
+  useFetchOptions: UseFetchOptions = {},
 ): UseFetchReturn<T['data']> {
-  return useRequest<T['data']>(url, useFetchOptions || {}).put(payload).json()
+  return useRequest<T['data']>(url, useFetchOptions).put(payload).json()
 }
 
-/**
- * 封装 delete 请求
- * @param url 请求地址
- * @param payload 请求参数
- */
 export function useDelete<T extends ApiResponse<any>>(
   url: MaybeRef<string>,
   payload?: MaybeRef<unknown>,
-  useFetchOptions?: UseFetchOptions,
+  useFetchOptions: UseFetchOptions = {},
 ): UseFetchReturn<T['data']> {
-  return useRequest<T['data']>(url, useFetchOptions || {}).delete(payload).json()
+  return useRequest<T['data']>(url, useFetchOptions).delete(payload).json()
 }
