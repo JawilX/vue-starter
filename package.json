@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@arco-design/web-vue": "^2.56.3",
-    "@vueuse/core": "^11.3.0",
+    "@vueuse/core": "^12.0.0",
     "dayjs": "^1.11.13",
     "pinia": "^2.3.0",
     "vue": "^3.5.13",
@@ -27,8 +27,8 @@
     "@antfu/eslint-config": "^3.11.2",
     "@antfu/utils": "^0.7.10",
     "@arco-plugins/vite-vue": "^1.4.5",
-    "@commitlint/cli": "^18.6.1",
-    "@commitlint/config-conventional": "^18.6.3",
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
     "@iconify-json/carbon": "^1.2.4",
     "@jawilx/gen-api": "^2.2.2",
     "@types/node": "^20.17.9",
@@ -48,7 +48,7 @@
     "unplugin-auto-import": "^0.18.6",
     "unplugin-vue-components": "^0.27.5",
     "unplugin-vue-router": "^0.10.9",
-    "vite": "^5.4.11",
+    "vite": "^6.0.3",
     "vue-tsc": "^2.1.10"
   },
   "simple-git-hooks": {
