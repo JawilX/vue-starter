@@ -1,8 +1,8 @@
 import type { UseFetchReturn } from '@vueuse/core'
 import type { IOption } from './options'
+import type { SearchProps } from '~/components/SearchForm.vue'
 import { isString } from '@antfu/utils'
 import { Input, type TableColumnData } from '@arco-design/web-vue'
-import type { SearchProps } from '~/components/SearchForm.vue'
 
 export interface ColumnProps extends TableColumnData {
   search?: SearchProps | undefined // 搜索项配置

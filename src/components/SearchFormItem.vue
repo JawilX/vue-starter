@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { ColumnProps } from '~/utils/columns'
 import { notNullish } from '@antfu/utils'
 import { Option, Radio } from '@arco-design/web-vue'
-import type { ColumnProps } from '~/utils/columns'
 
 interface SearchFormItem {
   column: ColumnProps

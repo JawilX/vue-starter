@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Cascader, DatePicker, Input, InputNumber, MonthPicker, QuarterPicker, RadioGroup, RangePicker, ResponsiveValue, Select, Slider, Switch, TreeSelect, WeekPicker, YearPicker } from '@arco-design/web-vue'
-import { IconDown, IconUp } from '@arco-design/web-vue/es/icon'
 import type { ColumnProps, EnumProps } from '~/utils/columns'
+import { IconDown, IconUp } from '@arco-design/web-vue/es/icon'
 
 export type SearchType =
   | typeof Input
@@ -46,6 +46,7 @@ export interface SearchFormProps {
   searchParam?: { [key: string]: any } // 搜索参数
   searchCols: number | ResponsiveValue
   collapsedRows?: number // 搜索项默认折叠行数
+  flex?: boolean // 是否使用 flex 布局
   search: (params: any) => void // 搜索方法
   reset: (params: any) => void // 重置方法
 }
@@ -53,6 +54,7 @@ export interface SearchFormProps {
 // 默认值
 const props = withDefaults(defineProps<SearchFormProps> (), {
   collapsedRows: 1,
+  flex: false,
   columns: () => [],
   searchParam: () => ({}),
 })
@@ -118,7 +120,6 @@ const showCollapse = computed(() => {
   return show
 })
 
-// 接收 enumMap
 const enumMap = inject('enumMap', ref(new Map()))
 function isRadioGroupAndEmpty(column: ColumnProps) {
   const enumData = enumMap.value.get(column.dataIndex)
@@ -127,8 +128,32 @@ function isRadioGroupAndEmpty(column: ColumnProps) {
 </script>
 
 <template>
-  <AForm class="border-b border-b-gray-2 px-4 pt-4" :model="searchParam" layout="inline">
-    <AGrid class="w-full" :cols="searchCols" :col-gap="12" :collapsed="collapsed" :collapsed-rows="collapsedRows">
+  <AForm class="border-b border-b-gray-2 bg-white px-4 pt-4" :model="searchParam" layout="inline">
+    <ASpace v-if="flex" wrap class="relative mb-1">
+      <template v-for="item in columns" :key="item.dataIndex">
+        <SearchFormTriggerItem :column="item" :search-param="searchParam" />
+      </template>
+      <ATooltip content="清除条件">
+        <AButton
+          class="rounded !border-[#d2ddf8] !text-[#4e5969] hover:!border-[#376af6] hover:!bg-[#376af626] hover:!text-[#376af6]"
+          type="outline"
+          size="small"
+          @click="reset"
+        >
+          <template #icon>
+            <AIconDelete />
+          </template>
+        </AButton>
+      </ATooltip>
+    </ASpace>
+    <AGrid
+      v-else
+      class="w-full"
+      :cols="searchCols"
+      :col-gap="12"
+      :collapsed="collapsed"
+      :collapsed-rows="collapsedRows"
+    >
       <template v-for="item in columns" :key="item.dataIndex">
         <AGridItem v-if="!isRadioGroupAndEmpty(item)" :span="item.search![breakPoint] ?? item.search!.span ?? 1">
           <AFormItem :label="String(item.title)" :field="item.dataIndex">
@@ -136,8 +161,8 @@ function isRadioGroupAndEmpty(column: ColumnProps) {
           </AFormItem>
         </AGridItem>
       </template>
-      <AGridItem v-if="!hideSearchButton" suffix content-class="justify-end">
-        <AFormItem hide-label content-class="justify-end">
+      <AGridItem v-if="!hideSearchButton" suffix>
+        <AFormItem hide-label content-class="justify-end" class="!mr-0">
           <AButton type="primary" @click="search">
             查询
           </AButton>

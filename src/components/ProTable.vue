@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { ResponsiveValue, TableBorder, TableInstance } from '@arco-design/web-vue'
 import type { UseFetchReturn } from '@vueuse/core'
+import type { ColumnProps, IColumnKey } from '~/utils/columns'
 import { notNullish } from '@antfu/utils'
 import { getColumns } from '~/utils/columns'
-import type { ColumnProps, IColumnKey } from '~/utils/columns'
 
 export interface ProTableProps {
   columns: (ColumnProps | IColumnKey)[] // 列配置项  ==> 必传
@@ -23,6 +23,7 @@ export interface ProTableProps {
   showSearch?: boolean // 是否显示搜索框 ==> 非必传（默认为true）
   hideSearchButton?: boolean // 是否隐藏搜索按钮 ==> 非必传（默认为false）
   searchFormClass?: string // 搜索表单样式 ==> 非必传
+  searchFormFlex?: boolean // 搜索表单是否使用flex布局 ==> 非必传（默认为false）
   collapsedRows?: number // 搜索项默认折叠行数
 }
 
@@ -39,6 +40,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
   showSearch: true,
   hideSearchButton: false,
   collapsedRows: 1,
+  searchFormFlex: false,
 })
 
 // 定义 emit 事件
@@ -113,7 +115,7 @@ provide('enumMap', enumMap)
 const searchColumns = computed(() => {
   return tableColumns.value
     ?.filter(item => item.search?.el || item.search?.render)
-    .sort((a, b) => b.search!.order! - a.search!.order!)
+    .sort((a, b) => a.search!.order! - b.search!.order!)
 })
 
 // 设置 搜索表单默认排序 && 搜索表单项的默认值
@@ -174,6 +176,7 @@ defineExpose({
     :hide-search-button="hideSearchButton"
     :search-param="searchParam"
     :search-cols="searchCols"
+    :flex="searchFormFlex"
     :search="_search"
     :reset="_reset"
     class="mb-4"
