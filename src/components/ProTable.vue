@@ -17,7 +17,7 @@ export interface ProTableProps {
   bordered?: boolean | TableBorder // 是否带有纵向边框 ==> 非必传（默认为 { cell: true }）
   scroll?: { x?: number | string, y?: number | string, minWidth?: number | string, maxHeight?: number | string } // 表格滚动配置 ==> 非必传
   rowKey?: string // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
-  selectable?: boolean // 行选择器 ==> 非比传 (默认为false)
+  rowSelectionType?: 'checkbox' | 'radio' // 行选择器类型 ==> 非比传（不传则不显示行选择）
   searchCols?: number | ResponsiveValue // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }
   showSearch?: boolean // 是否显示搜索框 ==> 非必传（默认为true）
   hideSearchButton?: boolean // 是否隐藏搜索按钮 ==> 非必传（默认为false）
@@ -34,7 +34,6 @@ const props = withDefaults(defineProps<ProTableProps>(), {
   initParam: () => ({}),
   bordered: () => ({ cell: true } as TableBorder),
   rowKey: 'id',
-  selectable: false,
   searchCols: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 3, xxl: 4 } as ResponsiveValue),
   showSearch: true,
   hideSearchButton: false,
@@ -210,7 +209,7 @@ defineExpose({
     :scroll="scroll"
     :loading="loading"
     :row-key="rowKey"
-    :row-selection="selectable ? { type: 'checkbox', showCheckedAll: true, selectedRowKeys: selectedListIds } : undefined"
+    :row-selection="rowSelectionType ? { type: rowSelectionType, showCheckedAll: rowSelectionType === 'checkbox', selectedRowKeys: selectedListIds } : undefined"
     :columns="tableColumns?.filter((i) => !i.hidden)"
     :data="processTableData"
     :pagination="pageable"
@@ -219,11 +218,11 @@ defineExpose({
     @page-change="handleCurrentChange"
   >
     <template
-      v-for="item in tableColumns?.filter((i) => i.slotName)"
-      :key="item.slotName"
-      #[item.slotName!]="{ column, record, rowIndex }"
+      v-for="item in tableColumns?.filter((i) => i.slotName)?.map(i => i.slotName)"
+      :key="item"
+      #[item]="{ column, record, rowIndex }"
     >
-      <slot :name="item.slotName" v-bind="{ column, record, rowIndex }">
+      <slot :name="item" v-bind="{ column, record, rowIndex }">
         {{ record[column.dataIndex] }}
       </slot>
     </template>
