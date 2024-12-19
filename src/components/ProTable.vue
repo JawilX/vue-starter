@@ -53,8 +53,6 @@ const tableRef = ref<TableInstance>()
 const { tableData, loading, pageable, searchParam, searchInitParam, getTableList, search, reset, handleSizeChange, handleCurrentChange }
   = useTable(props.requestApi, props.initParam, props.pagination, props.dataCallback, props.requestError)
 
-const { isSelected, selectedList, selectedListIds, selectionChange, clearSelection } = useSelection(tableData, props.rowKey)
-
 // 处理表格数据
 const processTableData = computed(() => {
   if (!props.data)
@@ -66,6 +64,8 @@ const processTableData = computed(() => {
     (pageable.value.pageSize ?? 10) * (pageable.value.current ?? 1),
   )
 })
+
+const { isSelected, selectedList, selectedListIds, selectionChange, clearSelection } = useSelection(processTableData, props.rowKey)
 
 const tableColumns = ref<ColumnProps[]>()
 

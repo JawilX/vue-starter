@@ -35,7 +35,7 @@ export function useTable(
 ) {
   const state = reactive<StateProps>({
     // 请求时loading
-    loading: true,
+    loading: false,
     // 表格数据
     tableData: [],
     // 分页数据
