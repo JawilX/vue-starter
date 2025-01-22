@@ -12,20 +12,10 @@ const route = useRoute()
 
 const menuStore = useMenuStore()
 const menus = menuStore.list
-const items = menuStore.all
 
 const selectedKeys = ref<string[]>([])
 watch(() => route.name, () => {
-  const cur = route.name as string
-  const curSplit = cur.split('-')
-  if (cur.endsWith('-detail')) {
-    const name = items.find(item => item.name?.startsWith(curSplit[0] + (curSplit.length > 2 ? `-${curSplit[1]}` : '')))?.name
-    if (name)
-      selectedKeys.value = [name]
-  }
-  else {
-    selectedKeys.value = [cur]
-  }
+  selectedKeys.value = [route.name.replace(/-(add|edit|detail)$/, '')]
 }, { immediate: true })
 
 const openKeys = ref<string[]>([])
@@ -48,14 +38,26 @@ function goto(name: keyof RouteNamedMap) {
       <span v-show="!modelCollapsed" class="ml-2 flex-1">
         App
       </span>
-      <ATooltip v-if="modelCollapsed" position="right" trigger="hover" content="展开" @click="modelCollapsed = false">
+      <ATooltip
+        v-if="modelCollapsed"
+        position="right"
+        trigger="hover"
+        content="展开"
+        @click="modelCollapsed = false"
+      >
         <AButton type="text" class="h-10! w-10! text-gray-5! hover:bg-gray-1!">
           <template #icon>
             <IconToRight />
           </template>
         </AButton>
       </ATooltip>
-      <ATooltip v-else position="right" trigger="hover" content="收起" @click="modelCollapsed = true">
+      <ATooltip
+        v-else
+        position="right"
+        trigger="hover"
+        content="收起"
+        @click="modelCollapsed = true"
+      >
         <AButton type="text" class="h-10! w-10! text-gray-5! hover:bg-gray-1!">
           <template #icon>
             <IconToLeft />
