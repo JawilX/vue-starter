@@ -78,11 +78,7 @@ export function usePostFormData<T extends ApiResponse<any>>(
   Object.entries(payload || {}).forEach(([key, value]) => {
     formData.append(key, value)
   })
-  return useRequest<T['data']>(
-    url,
-    { headers: { 'Content-Type': 'multipart/form-data' } },
-    useFetchOptions,
-  ).post(formData).json()
+  return useRequest<T['data']>(url, useFetchOptions).post(formData).json()
 }
 
 export function usePut<T extends ApiResponse<any>>(
