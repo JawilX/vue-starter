@@ -30,7 +30,7 @@ function setupRouterGuard(router: Router) {
     if (!exist && firstMenuName)
       next({ name: firstMenuName })
     else if (!exist && !firstMenuName)
-      next({ name: '403' })
+      next({ name: '/403' })
     else
       next()
   })
