@@ -17,7 +17,7 @@ export function openWindow(url: string, opts?: { target?: TargetContext, [key: s
 
 export function cloneDeep(obj: any) {
   if (!obj)
-    return
+    return obj
 
   const newObj = Array.isArray(obj) ? [] : {} as any
   for (const [key, value] of Object.entries(obj)) {
