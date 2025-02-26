@@ -6,6 +6,8 @@ export interface ITab {
 }
 
 export const useTabBarStore = defineStore('tabBar', () => {
+  const route = useRoute()
+
   const visible = ref(true)
 
   /**
@@ -37,15 +39,24 @@ export const useTabBarStore = defineStore('tabBar', () => {
     cacheRoutes.value[name] = { ...route }
   }
 
-  function deleteTab(name: string) {
+  function deleteTab(name = curTab.value) {
     const index = cacheTabs.value.findIndex(item => item.name === name)
 
     if (name === curTab.value)
-      curTab.value = (cacheTabs.value[index + 1] || cacheTabs.value[index - 1]).name
+      curTab.value = (cacheTabs.value[index + 1] || cacheTabs.value[index - 1])?.name
 
     if (index > -1)
       cacheTabs.value.splice(index, 1)
   }
 
-  return { visible, curTab, cacheTabs, cacheRoutes, setAllTab, setCurTab, deleteTab }
+  function back() {
+    deleteTab()
+    const back = route.query.back as string
+    if (back)
+      curTab.value = back
+    else
+      curTab.value = route.name.replace(/-(add|edit|detail)$/, '')
+  }
+
+  return { visible, curTab, cacheTabs, cacheRoutes, setAllTab, setCurTab, deleteTab, back }
 })

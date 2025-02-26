@@ -8,7 +8,7 @@ watch(() => route.name, () => {
 }, { immediate: true })
 
 watch(() => tabBarStore.curTab, (val) => {
-  router.push(tabBarStore.cacheRoutes[val])
+  router.push(tabBarStore.cacheRoutes[val] || { name: val })
 })
 </script>
 
