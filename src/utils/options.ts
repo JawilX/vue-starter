@@ -1,6 +1,7 @@
 export interface IOption {
-  value: string | number
+  value: any
   label: string
+  color?: string
   children?: IOption[]
 }
 
@@ -19,5 +20,10 @@ export function isOptions(includeAll = false): IOption[] {
 
 export function getOptionLabel(options: IOption[], value?: string | number | boolean) {
   // eslint-disable-next-line eqeqeq
-  return options.find(item => item.value == value)?.label
+  return options.find(item => item.value == value)?.label ?? value
+}
+
+export function getOptionColor(options: IOption[], value?: string | number | boolean) {
+  // eslint-disable-next-line eqeqeq
+  return options?.find(item => item.value == value)?.color
 }
