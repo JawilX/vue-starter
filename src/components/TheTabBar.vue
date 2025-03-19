@@ -20,7 +20,7 @@ watch(() => tabBarStore.curTab, (val) => {
     type="card-gutter"
     hide-content
     :editable="tabBarStore.cacheTabs.length > 1"
-    @delete="(name: string) => tabBarStore.deleteTab(name)"
+    @delete="(name: any) => tabBarStore.deleteTab(name)"
   >
     <ATabPane v-for="item in tabBarStore.cacheTabs" :key="item.name" :title="item.title" />
   </ATabs>

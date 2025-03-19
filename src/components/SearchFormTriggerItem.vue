@@ -23,9 +23,9 @@ const fieldNames = computed(() => {
 })
 
 // 接收 enumMap
-const enumMap = inject('enumMap', ref(new Map()))
+const enumMap = inject<Ref<Map<string, { [key: string]: any }[]>>>('enumMap', ref(new Map()))
 const columnEnum = computed(() => {
-  const enumData = enumMap.value.get(props.column.dataIndex)
+  const enumData = enumMap.value.get(props.column.dataIndex || '')
   if (!enumData)
     return []
   return enumData

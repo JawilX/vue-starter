@@ -6,7 +6,7 @@ const menuStore = useMenuStore()
 async function refresh() {
   await menuStore.fetchConfig()
   if (menuStore.all.length > 0) {
-    await router.push({ name: menuStore.all[0].name })
+    await router.push({ name: menuStore.all[0].name } as any)
     location.reload()
   }
 }

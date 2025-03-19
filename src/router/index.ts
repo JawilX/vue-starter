@@ -28,7 +28,7 @@ function setupRouterGuard(router: Router) {
     }
     const firstMenuName = menuStore.all.find(menu => !menu.meta.hideInMenu)?.name
     if (!exist && firstMenuName)
-      next({ name: firstMenuName })
+      next({ name: firstMenuName } as any)
     else if (!exist && !firstMenuName)
       next({ name: '/403' })
     else
