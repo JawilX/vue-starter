@@ -50,7 +50,7 @@ export function useGet<T extends ApiResponse<any>>(
   url: MaybeRef<string>,
   query?: MaybeRef<unknown>,
   useFetchOptions: UseFetchOptions = {},
-): UseFetchReturn<T['data']> {
+): UseFetchReturn<T['data']> & PromiseLike<UseFetchReturn<T['data']>> {
   const _url = computed(() => {
     const _url = unref(url)
     const _query = unref(query)
@@ -65,7 +65,7 @@ export function usePost<T extends ApiResponse<any>>(
   url: MaybeRef<string>,
   payload?: MaybeRef<unknown>,
   useFetchOptions: UseFetchOptions = {},
-): UseFetchReturn<T['data']> {
+): UseFetchReturn<T['data']> & PromiseLike<UseFetchReturn<T['data']>> {
   return useRequest<T['data']>(url, useFetchOptions).post(payload).json()
 }
 
@@ -73,7 +73,7 @@ export function usePostFormData<T extends ApiResponse<any>>(
   url: MaybeRef<string>,
   payload?: MaybeRef<unknown>,
   useFetchOptions: UseFetchOptions = {},
-): UseFetchReturn<T['data']> {
+): UseFetchReturn<T['data']> & PromiseLike<UseFetchReturn<T['data']>> {
   const formData = new FormData()
   Object.entries(payload || {}).forEach(([key, value]) => {
     formData.append(key, value)
@@ -85,7 +85,7 @@ export function usePut<T extends ApiResponse<any>>(
   url: MaybeRef<string>,
   payload?: MaybeRef<unknown>,
   useFetchOptions: UseFetchOptions = {},
-): UseFetchReturn<T['data']> {
+): UseFetchReturn<T['data']> & PromiseLike<UseFetchReturn<T['data']>> {
   return useRequest<T['data']>(url, useFetchOptions).put(payload).json()
 }
 
@@ -93,6 +93,6 @@ export function useDelete<T extends ApiResponse<any>>(
   url: MaybeRef<string>,
   payload?: MaybeRef<unknown>,
   useFetchOptions: UseFetchOptions = {},
-): UseFetchReturn<T['data']> {
+): UseFetchReturn<T['data']> & PromiseLike<UseFetchReturn<T['data']>> {
   return useRequest<T['data']>(url, useFetchOptions).delete(payload).json()
 }
