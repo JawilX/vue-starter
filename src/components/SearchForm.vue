@@ -3,21 +3,21 @@ import type { Cascader, DatePicker, Input, InputNumber, MonthPicker, QuarterPick
 import type { ColumnProps, EnumProps } from '~/utils/columns'
 import { IconDown, IconUp } from '@arco-design/web-vue/es/icon'
 
-export type SearchType =
-  | typeof Input
-  | typeof InputNumber
-  | typeof Select
-  | typeof TreeSelect
-  | typeof Cascader
-  | typeof DatePicker
-  | typeof YearPicker
-  | typeof MonthPicker
-  | typeof QuarterPicker
-  | typeof WeekPicker
-  | typeof RangePicker
-  | typeof Switch
-  | typeof RadioGroup
-  | typeof Slider
+export type SearchType
+  = | typeof Input
+    | typeof InputNumber
+    | typeof Select
+    | typeof TreeSelect
+    | typeof Cascader
+    | typeof DatePicker
+    | typeof YearPicker
+    | typeof MonthPicker
+    | typeof QuarterPicker
+    | typeof WeekPicker
+    | typeof RangePicker
+    | typeof Switch
+    | typeof RadioGroup
+    | typeof Slider
 
 export interface SearchRenderScope {
   searchParam: { [key: string]: any }
