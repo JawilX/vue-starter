@@ -37,9 +37,9 @@ const useRequest = createFetch({
     },
     onFetchError({ data, error }) {
       console.error('onFetchError: ', data, error?.name, error?.message)
+      // 自动取消发起新请求时error.name为AbortError，这种情况不要提示错误
       if (error?.name !== 'AbortError')
         Message.error('网络错误，请稍后再试')
-      data = undefined
       return { data, error }
     },
   },
