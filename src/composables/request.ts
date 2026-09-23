@@ -1,4 +1,5 @@
-import type { MaybeRef, UseFetchOptions, UseFetchReturn } from '@vueuse/core'
+import type { UseFetchOptions, UseFetchReturn } from '@vueuse/core'
+import type { MaybeRef } from 'vue'
 import type { LocationQueryRaw } from 'vue-router'
 import { notNullish } from '@antfu/utils'
 import { Message } from '@arco-design/web-vue'

@@ -1,6 +1,6 @@
 import type { App } from 'vue'
-import type { Router } from 'vue-router/auto'
-import { createRouter, createWebHashHistory } from 'vue-router/auto'
+import type { Router } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { routes } from 'vue-router/auto-routes'
 import { useMenuStore } from '~/stores/menu'
 
