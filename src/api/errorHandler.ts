@@ -49,11 +49,11 @@ export function handleCodeError(code: number, msg: string) {
   switch (code) {
     case ApiStatusCode.SESSION_FAILUIRE:
       message += '会话失效，请重新登录'
-      setTimeout(() => logout(), 800)
+      setTimeout(logout, 800)
       break
     case ApiStatusCode.SESSION_BE_REPLACED:
       message += '该账号被顶下线'
-      setTimeout(() => logout(), 800)
+      setTimeout(logout, 800)
       break
     case ApiStatusCode.AUTH_FAILED:
       message += '认证失败，无法访问系统资源'
