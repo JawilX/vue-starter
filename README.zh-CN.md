@@ -37,8 +37,7 @@
 
 ### 插件
 
-- [Vue Router](https://github.com/vuejs/vue-router)
-  - [`unplugin-vue-router`](https://github.com/posva/unplugin-vue-router) - 以文件系统为基础的路由
+- [Vue Router](https://github.com/vuejs/router) - 内置文件系统路由
 - [`unplugin-auto-import`](https://github.com/antfu/unplugin-auto-import) - 直接使用 Composition API 等，无需导入
 - [`unplugin-vue-components`](https://github.com/antfu/unplugin-vue-components) - 自动加载组件
 - [VueUse](https://github.com/antfu/vueuse) - 实用的 Composition API 工具合集
